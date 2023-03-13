@@ -36,7 +36,7 @@ uses
   UService.Servico in 'model\services\UService.Servico.pas',
   UService.NotaFiscal in 'model\services\UService.NotaFiscal.pas',
   UUtils.Functions in 'model\utils\UUtils.Functions.pas',
-  UService.ItemServico in 'UService.ItemServico.pas';
+  UService.ItemServico in 'model\services\UService.ItemServico.pas';
 
 {$R *.res}
 
