@@ -15,7 +15,7 @@ type
     FTipo_Tributacao : Integer;
     FSituacao_Tributaria : Integer;
     FLocal_Prest_Servico : String;
-    FTrib_mun_Prestado : Char;
+    FTrib_mun_Prestado : String;
     FValorUnitario : Currency;
     FJSON : TJSONObject;
 
@@ -27,7 +27,7 @@ type
     function GetSituacaoTributaria: Integer;
     function GetTipoTributacao: Integer;
     function GetJSON: TJSONObject;
-    function GetTributacaoMunicipioPrestado: Char;
+    function GetTributacaoMunicipioPrestado: String;
     function GetValorUnitario: Currency;
 
     procedure SetAliquotaServico(const Value: Double);
@@ -37,12 +37,14 @@ type
     procedure SetLocalPrestacaoServico(const Value: String);
     procedure SetSituacaoTributaria(const Value: Integer);
     procedure SetTipoTributacao(const Value: Integer);
-    procedure SetTributacaoMunicipioPrestado(const Value: Char);
+    procedure SetTributacaoMunicipioPrestado(const Value: String);
     procedure SetValorUnitario(const Value: Currency);
   public
     Constructor Create; overload;
-    Constructor Create(aId, aTipoTributacao, aCodServico, aSituacaoTributaria: Integer;
-    aDescricao, aLocalPrest, aServico : String; aTribMunPrestado : Char; aValor : Currency
+    Constructor Create(aId : Integer); overload;
+    Constructor Create(aId : Integer; aDescricao : String); overload;
+    Constructor Create(aId, aCodServico, aSituacaoTributaria: Integer;
+    aDescricao, aLocalPrest, aServico,aTribMunPrestado: String ; aValor : Currency
     ; aAliquota : Double);overload;
     destructor Destroy; override;
 
@@ -53,7 +55,7 @@ type
     property TipoTributacao : Integer read GetTipoTributacao write SetTipoTributacao;
     property SituacaoTributaria : Integer read GetSituacaoTributaria write SetSituacaoTributaria;
     property LocalPrestacaoServico : String read GetLocalPrestacaoServico write SetLocalPrestacaoServico;
-    property TributacaoMunicipioPrestado : Char read GetTributacaoMunicipioPrestado write SetTributacaoMunicipioPrestado;
+    property TributacaoMunicipioPrestado : String read GetTributacaoMunicipioPrestado write SetTributacaoMunicipioPrestado;
     property ValorUnitario : Currency read GetValorUnitario write SetValorUnitario;
     property JSON : TJSONObject read GetJSON;
   end;
@@ -65,15 +67,14 @@ uses
 
 { TServico }
 
-constructor TServico.Create(aId, aTipoTributacao, aCodServico,
-  aSituacaoTributaria: Integer; aDescricao, aLocalPrest, aServico: String;
-  aTribMunPrestado: Char; aValor: Currency; aAliquota: Double);
+constructor TServico.Create(aId, aCodServico,
+  aSituacaoTributaria: Integer; aDescricao, aLocalPrest, aServico, aTribMunPrestado: String;
+   aValor: Currency; aAliquota: Double);
 begin
     FId := aId;
     FDescricaoServico := aDescricao;
     FCod_Servico := aCodServico;
     FAliquotaServico := aAliquota;
-    FTipo_Tributacao := aTipoTributacao;
     FSituacao_Tributaria := aSituacaoTributaria;
     FLocal_Prest_Servico := aLocalPrest;
     FTrib_mun_Prestado := aTribMunPrestado;
@@ -82,9 +83,22 @@ begin
     Self.Create;
 end;
 
+constructor TServico.Create(aId: Integer; aDescricao: String);
+begin
+   FId := aId;
+    FDescricaoServico := aDescricao;
+    Self.Create;
+end;
+
 constructor TServico.Create;
 begin
   FJSON := TJSONObject.Create;
+end;
+
+constructor TServico.Create(aId: Integer);
+begin
+  FId := aId;
+  Self.Create;
 end;
 
 destructor TServico.Destroy;
@@ -134,7 +148,7 @@ begin
   Result := FJSON;
 end;
 
-function TServico.GetTributacaoMunicipioPrestado: Char;
+function TServico.GetTributacaoMunicipioPrestado: String;
 begin
   Result := FTrib_mun_Prestado;
 end;
@@ -180,7 +194,7 @@ begin
   FTipo_Tributacao := Value;
 end;
 
-procedure TServico.SetTributacaoMunicipioPrestado(const Value: Char);
+procedure TServico.SetTributacaoMunicipioPrestado(const Value: String);
 begin
   FTrib_mun_Prestado := Value;
 end;
